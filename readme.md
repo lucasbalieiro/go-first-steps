@@ -121,7 +121,7 @@ func main() {
 
     anotherGrape := 0 //  shortest delcaration possible
 
-    ant, anotherAnt, uncleAnt := 0
+    ant, anotherAnt, uncleAnt := 0,2,4
 
 
 }
@@ -237,4 +237,13 @@ func main() {
 just do 
 ```go
 var boolean bool = true
+```
+### Constants
+Almost everything we said before apply to constants but, you cannot change their value because they are constants in case you did`nt noticed.
+
+```go
+const dog = "Husky"
+```
+Its value must be defined at declaration time
+
 
