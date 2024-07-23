@@ -246,4 +246,149 @@ const dog = "Husky"
 ```
 Its value must be defined at declaration time
 
+## Functions and Control Structures
 
+The first curly brace of a function must be in the same line of its initial definition.
+
+```go
+func main() {
+	insult("Lucas")
+}
+
+func insult(your_name string) 
+{
+	fmt.Print("My name is " + your_name + ", and I use Windows")
+}
+//main/step1/main.go:12:1: syntax error: unexpected semicolon or newline before {
+```
+
+As we already saw, wu must use the `func` keyword followed by the name of the function and its parameters.
+
+One Cool thing about the Go functions is that you can return multiple values delcaring like this:
+
+```go
+func main() {
+	var result, remainder = divideAndReturnRemainder(8, 2)
+	fmt.Printf("result: %v. remainder: %v", result, remainder)
+}
+
+func divideAndReturnRemainder(number1 int, number2 int) (int, int) {
+	var result = number1 / number2
+	var remainder = number1 % number2
+	return result, remainder
+}
+```
+*divideAndReturnRemainder* are the function that is returning multiple values.
+
+### Error Handling
+
+But every body is gangsta until we use this function to divide by zero
+```go
+divideAndReturnRemainder(8,0)
+//panic: runtime error: integer divide by zeros
+```
+
+Of course we will receive an error, because, apparently math does not accept division by zero.
+
+The Go way to handle this scenario is to have a return type error alongside with the no-error values.
+
+`error` is a built-in type in Go and its default value is `nil` (that is the `null` of Go).
+
+Since out function returns an error. The caller have to check if this error is `nil` or if it contains an error. Something like this:
+```go
+func main() {
+	var result, remainder, err = divideAndReturnRemainder(8, 0)
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	fmt.Printf("result: %v. remainder: %v", result, remainder)
+}
+
+func divideAndReturnRemainder(number1 int, number2 int) (int, int, error) {
+	var err error
+	if number2 == 0 {
+		err = errors.New("math is not Mathing right now")
+		return 0, 0, err
+	}
+	var result = number1 / number2
+	var remainder = number1 % number2
+	return result, remainder, err
+}
+```
+
+This pattern of error handling is common in Go, so if you import another package, they probably will be doing like us. So make sure that you check if *err != nill*
+
+### Switch ... case ...
+
+Nothing much to add. just take a look at the structure:
+
+```go
+func main() {
+    var day = 3
+    switch day {
+    case 1:
+        fmt.Println("Monday")
+    case 2:
+        fmt.Println("Tuesday")
+    case 3:
+        fmt.Println("Wednesday")
+    case 4:
+        fmt.Println("Thursday")
+    case 5:
+        fmt.Println("Friday")
+    case 6:
+        fmt.Println("Saturday")
+    case 7:
+        fmt.Println("Sunday")
+    default:
+        fmt.Println("Invalid day")
+    }
+}
+```
+
+### Arrays
+As we already know, arrays are:
+- Fixed Length
+- Same Type
+- Indexable (Start at index 0)
+- Contiguous memory
+
+The array below show how to declare one. And it obeys what we know about arrays.
+
+```go
+func main() {
+	var intArr [3]int32
+
+	fmt.Println(intArr)
+	// [0 0 0]
+
+	intArr[2] = 26
+	fmt.Println(intArr)
+	// [0 0 26]
+
+	//Addr positions
+	fmt.Println(&intArr[0])
+	fmt.Println(&intArr[1])
+	fmt.Println(&intArr[2])
+	//0xc0000120a0
+	//0xc0000120a4
+	//0xc0000120a8
+
+}
+```
+
+### Slices
+Under the hood slices are just arrays with some [salse](https://go.dev/doc/effective_go#slices).
+
+Slices are delcared almost like arrays, except you can omit the array size. And you can add 'infinity' things of the same type, using `append(slice, elems)`
+
+```go
+func main() {
+    var sliceNumbers []int
+    sliceNumbers = append(sliceNumbers, 1)
+    sliceNumbers = append(sliceNumbers, 2, 3, 4)
+}
+```
+### Maps
